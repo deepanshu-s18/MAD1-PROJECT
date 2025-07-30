@@ -1,0 +1,53 @@
+{% extends 'index.html' %}
+
+{% block title %} Occupied Spot Details {% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <div class="card shadow-lg p-4">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4"><u>Occupied Parking Spot Details</u></h2>
+                    {% if spot and reservation %}
+                        <form method="get" action="{{ url_for('index') }}">
+                            <div class="mb-3">
+                                <label for="parkingSpotId" class="form-label fw-bold">Parking Spot ID</label>
+                                <input type="text" class="form-control" id="parkingSpotId" name="parking_spot_id" value="{{ spot.parking_spot_id }}" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="userId" class="form-label fw-bold">User ID</label>
+                                <input type="text" class="form-control" id="userId" name="user_id" value="{{ reservation.user_id }}" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="fullName" class="form-label fw-bold">Full Name</label>
+                                <input type="text" class="form-control" id="fullName" name="full_name" value="{{ reservation.user.full_name if reservation.user else 'N/A' }}" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="vehicleRegistrationNumber" class="form-label fw-bold">Vehicle Registration Number</label>
+                                <input type="text" class="form-control" id="vehicleRegistrationNumber" name="vehicle_registration_number" value="{{ reservation.vehicle_registration_number }}" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="parkingEntryTime" class="form-label fw-bold">Parking Entry Time</label>
+                                <input type="text" class="form-control" id="parkingEntryTime" name="parking_entry_time" value="{{ reservation.parking_timestamp.strftime('%Y-%m-%d %H:%M:%S') }}" readonly>
+                            </div>
+                            <div class="mb-4">
+                                <label for="estimatedCost" class="form-label fw-bold">Estimated Cost</label>
+                                <input type="text" class="form-control" id="estimatedCost" name="estimated_cost" value="₹{{ cost }}" readonly>
+                                <p class="form-text text-muted mt-2">This is an estimated cost based on the current duration and hourly rate.</p>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-secondary btn-lg">Go Back</button>
+                            </div>
+                        </form>
+                    {% else %}
+                        <div class="alert alert-warning text-center" role="alert">
+                            Parking spot details or reservation data not found.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

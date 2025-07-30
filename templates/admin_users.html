@@ -1,0 +1,38 @@
+{% extends 'index.html' %}
+{% block title %}Registered Users{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Registered Users</h2>
+    <form method="post" class="mb-3 d-flex justify-content-center">
+        <input type="text" name="search" class="form-control w-25 me-2" placeholder="Search by ID or Name" value="{{ search_query|default('') }}">
+        <button type="submit" class="btn btn-primary">Search</button>
+        {% if search_query %}
+            <a href="{{ url_for('admin_users') }}" class="btn btn-secondary ms-2">Clear</a>
+        {% endif %}
+    </form>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Email</th>
+                    <th>Full Name</th>
+                    <th>Address</th>
+                    <th>Pin Code</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.full_name }}</td>
+                    <td>{{ user.address }}</td>
+                    <td>{{ user.pin_code }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

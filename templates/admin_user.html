@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registered System Users</title>
+</head>
+{% extends 'index.html' %}
+<body>
+    {% block content %}
+    <div class="container mt-4">
+        <h2 class="text-center mb-3"><u>Registered System Users</u></h2>
+        <p class="text-center text-muted mb-4"><i>A comprehensive list of all registered users in the system.</i></p>
+        {% if users %}
+            <div class="d-flex justify-content-center">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover align-middle">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Email</th>
+                                <th>Full Name</th>
+                                <th>Address</th>
+                                <th>Pin Code</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                            <tr>
+                                <td>{{ user.id }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.full_name }}</td>
+                                <td>{{ user.address }}</td>
+                                <td>{{ user.pin_code }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    {% endblock %}
+</body>
+</html>

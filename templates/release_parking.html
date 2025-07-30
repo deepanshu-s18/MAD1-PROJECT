@@ -1,0 +1,36 @@
+{% extends 'index.html' %}
+
+{% block title %}Release Parking Spot{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card shadow-lg p-4">
+            <h2 class="card-title text-center mb-4">Release Parking Spot</h2>
+            <form method="post">
+                <div class="mb-3">
+                    <label class="form-label">Spot ID</label>
+                    <input type="text" class="form-control" value="{{ spot.id }}" readonly>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Vehicle Number</label>
+                    <input type="text" class="form-control" value="{{ reservation.vehicle_number }}" readonly>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Parking Time</label>
+                    <input type="text" class="form-control" value="{{ reservation.parking_timestamp.strftime('%Y-%m-%d %H:%M') }}" readonly>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Release Time</label>
+                    <input type="text" class="form-control" value="{{ reservation.leaving_timestamp.strftime('%Y-%m-%d %H:%M') if reservation.leaving_timestamp else '---' }}" readonly>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Total Cost</label>
+                    <input type="text" class="form-control" value="{{ reservation.total_cost if reservation.total_cost else '---' }}" readonly>
+                </div>
+                <button type="submit" class="btn btn-danger w-100">Release</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View / Delete Parking Spot</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <h2 class="text-center mb-4">View / Delete Parking Spot</h2>
+                <form method="POST" action="/delete_parking_spot">
+                    <div class="mb-3">
+                        <label for="spot_id" class="form-label">Spot ID</label>
+                        <input type="text" class="form-control" id="spot_id" name="spot_id" required>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" name="action" value="delete" class="btn btn-danger">Delete</button>
+                        <button type="submit" name="action" value="view" class="btn btn-primary">View</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

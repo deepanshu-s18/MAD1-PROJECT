@@ -1,0 +1,85 @@
+{% extends 'index.html' %}
+{% block title %}Admin Summary Report{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Parking Summary</h2>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="border rounded p-4 bg-light" style="min-height: 300px;">
+                                <h5 class="text-center mb-3">Revenue from Each Parking Zone</h5>
+                                <canvas id="revenueChart" style="max-width: 250px; max-height: 250px;"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="border rounded p-4 bg-light" style="min-height: 300px;">
+                                <h5 class="text-center mb-3">Available vs Occupied Spots</h5>
+                                <canvas id="occupancyChart" style="max-width: 250px; max-height: 250px;"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var revenueLabels = {{ summary_data|map(attribute='zone_name')|list|tojson | safe }};
+    var revenueValues = {{ summary_data|map(attribute='total_revenue')|list|tojson | safe }};
+    var totalSpots = {{ summary_data|map(attribute='total_spots')|list|tojson | safe }};
+    var occupiedSpots = {{ summary_data|map(attribute='occupied_spots')|list|tojson | safe }};
+    var availableValues = totalSpots.map(function(v, i) { return v - occupiedSpots[i]; });
+    var revenueData = {
+        labels: revenueLabels,
+        datasets: [{
+            label: 'Revenue (₹)',
+            data: revenueValues,
+            backgroundColor: [
+                '#90caf9', '#a5d6a7', '#ffcc80', '#f48fb1', '#ce93d8', '#fff176'
+            ],
+            borderWidth: 2
+        }]
+    };
+    var occupancyData = {
+        labels: revenueLabels,
+        datasets: [
+            {
+                label: 'Available',
+                data: availableValues,
+                backgroundColor: '#a5d6a7'
+            },
+            {
+                label: 'Occupied',
+                data: occupiedSpots,
+                backgroundColor: '#f48fb1'
+            }
+        ]
+    };
+    new Chart(document.getElementById('revenueChart'), {
+        type: 'doughnut',
+        data: revenueData,
+        options: {
+            plugins: {
+                legend: { display: true, position: 'bottom' }
+            }
+        }
+    });
+    new Chart(document.getElementById('occupancyChart'), {
+        type: 'bar',
+        data: occupancyData,
+        options: {
+            plugins: {
+                legend: { display: true, position: 'bottom' }
+            },
+            scales: {
+                x: { stacked: true },
+                y: { stacked: true, beginAtZero: true }
+            }
+        }
+    });
+</script>
+{% endblock %}

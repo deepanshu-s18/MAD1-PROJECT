@@ -1,0 +1,23 @@
+{% extends 'index.html' %}
+{% block title %}Spot Details{% endblock %}
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card shadow-lg p-4">
+            <h2 class="card-title text-center mb-4">Parking Spot Details</h2>
+            <p><strong>Spot ID:</strong> {{ spot.id }}</p>
+            <p><strong>Status:</strong> {{ 'Available' if spot.status == 'A' else 'Occupied' }}</p>
+            {% if reservation %}
+                <hr>
+                <h5 class="mb-3">Current Reservation</h5>
+                <p><strong>User ID:</strong> {{ reservation.user_id }}</p>
+                <p><strong>Vehicle Number:</strong> {{ reservation.vehicle_number }}</p>
+                <p><strong>Parking Time:</strong> {{ reservation.parking_timestamp.strftime('%Y-%m-%d %H:%M') }}</p>
+            {% else %}
+                <p class="text-success">No vehicle is currently parked here.</p>
+            {% endif %}
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary mt-3">Go Back</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

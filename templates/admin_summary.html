@@ -1,0 +1,55 @@
+{% extends 'index.html' %}
+{% block title %}Admin Summary{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <h2 class="text-center mb-4">Parking Lot Summary</h2>
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="border rounded p-4 bg-light">
+                <h5 class="text-center mb-3">Revenue by Lot</h5>
+                <canvas id="revenueChart" style="max-width: 300px; max-height: 250px;"></canvas>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="border rounded p-4 bg-light">
+                <h5 class="text-center mb-3">Available vs Occupied Spots</h5>
+                <canvas id="occupancyChart" style="max-width: 300px; max-height: 250px;"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var labels = {{ summary_data|map(attribute='location')|list|tojson | safe }};
+    var revenue = {{ summary_data|map(attribute='revenue')|list|tojson | safe }};
+    var available = {{ summary_data|map(attribute='available')|list|tojson | safe }};
+    var occupied = {{ summary_data|map(attribute='occupied')|list|tojson | safe }};
+    new Chart(document.getElementById('revenueChart'), {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Revenue',
+                data: revenue,
+                backgroundColor: ['#90caf9', '#a5d6a7', '#ffcc80', '#f48fb1', '#ce93d8', '#fff176'],
+                borderWidth: 2
+            }]
+        },
+        options: { plugins: { legend: { display: true, position: 'bottom' } } }
+    });
+    new Chart(document.getElementById('occupancyChart'), {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [
+                { label: 'Available', data: available, backgroundColor: '#a5d6a7' },
+                { label: 'Occupied', data: occupied, backgroundColor: '#f48fb1' }
+            ]
+        },
+        options: {
+            plugins: { legend: { display: true, position: 'bottom' } },
+            scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true } }
+        }
+    });
+</script>
+{% endblock %}

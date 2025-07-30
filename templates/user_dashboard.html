@@ -1,0 +1,83 @@
+{% extends 'index.html' %}
+
+{% block title %}User Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Recent Parking History</h2>
+    {% if reservations %}
+    <div class="table-responsive mb-5">
+        <table class="table table-striped table-bordered align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Lot</th>
+                    <th>Spot</th>
+                    <th>Vehicle</th>
+                    <th>Entry Time</th>
+                    <th>Cost</th>
+                    <th>Status / Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in reservations %}
+                <tr>
+                    <td>{{ r.spot.lot.prime_location_name if r.spot and r.spot.lot else 'N/A' }}</td>
+                    <td>{{ r.spot.id if r.spot else 'N/A' }}</td>
+                    <td>{{ r.vehicle_number }}</td>
+                    <td>{{ r.parking_timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
+                    <td>{% if r.total_cost %}₹{{ r.total_cost }}{% else %}—{% endif %}</td>
+                    <td>
+                        {% if not r.leaving_timestamp %}
+                        <a href="{{ url_for('release_parking', reservation_id=r.id) }}" class="btn btn-danger btn-sm">Release</a>
+                        {% else %}
+                        <span class="btn btn-success btn-sm disabled">Released</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+    <h2 class="text-center mb-4">Available Parking Lots</h2>
+    <form method="post" class="mb-3 d-flex justify-content-center">
+        <input type="text" name="search" class="form-control w-25 me-2" placeholder="Search by Address or Pin Code" value="{{ search_query|default('') }}">
+        <button type="submit" class="btn btn-primary">Search</button>
+        {% if search_query %}
+            <a href="{{ url_for('user_dashboard') }}" class="btn btn-secondary ms-2">Clear</a>
+        {% endif %}
+    </form>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Lot</th>
+                    <th>Address</th>
+                    <th>Pin Code</th>
+                    <th>Price</th>
+                    <th>Available Spots</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for lot in lots %}
+                <tr>
+                    <td>{{ lot.prime_location_name }}</td>
+                    <td>{{ lot.address }}</td>
+                    <td>{{ lot.pin_code }}</td>
+                    <td>₹{{ lot.price }}</td>
+                    <td>{{ lot.spots|selectattr('status', 'equalto', 'A')|list|length }}</td>
+                    <td>
+                        {% if lot.spots|selectattr('status', 'equalto', 'A')|list|length > 0 %}
+                        <a href="{{ url_for('book_parking', lot_id=lot.id) }}" class="btn btn-primary btn-sm">Book</a>
+                        {% else %}
+                        <span class="btn btn-secondary btn-sm disabled">Full</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

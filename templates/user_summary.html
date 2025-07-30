@@ -1,0 +1,31 @@
+{% extends 'index.html' %}
+{% block title %}User Parking Summary{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <h2 class="text-center mb-4">Your Parking Summary</h2>
+    <div class="d-flex justify-content-center">
+        <canvas id="userSummaryChart" style="max-width: 350px; max-height: 300px;"></canvas>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var usedSpots = {{ summary_data['used_spots']|tojson|safe }};
+    var totalReservations = {{ summary_data['total_reservations']|tojson|safe }};
+    new Chart(document.getElementById('userSummaryChart'), {
+        type: 'bar',
+        data: {
+            labels: ['Used Spots', 'Total Reservations'],
+            datasets: [{
+                label: 'Parking Usage',
+                data: [usedSpots, totalReservations],
+                backgroundColor: ['#90caf9', '#ffcc80'],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            plugins: { legend: { display: false } },
+            scales: { x: { beginAtZero: true }, y: { beginAtZero: true } }
+        }
+    });
+</script>
+{% endblock %}

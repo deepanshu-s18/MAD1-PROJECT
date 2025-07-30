@@ -1,5 +1,6 @@
 TO RUN APP
 To create a virtual environment, run:
+source .venv/bin/activate(which I used)
 
 # For Linux and macOS
 python3 -m venv .env

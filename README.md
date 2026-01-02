@@ -1,6 +1,5 @@
-MAD1-PROJECT  
+MAD1-PROJECT (Modern Application Development) 
 📌 *Foundational web + backend project*
-
 
 # MAD1 Project – Web Application Development
 
@@ -27,15 +26,6 @@ It focuses on building a structured web application with frontend and backend co
 
 ---
 
-##  Repository Structure
-
-MAD1-PROJECT/
-│
-├── backend/     
-├── frontend/   
-└── README.md
-
----
 
 ## ⚙️ How to Run
 1. Clone the repository

@@ -1,7 +1,7 @@
 MAD1-PROJECT  
 📌 *Foundational web + backend project*
 
-md
+
 # MAD1 Project – Web Application Development
 
 ##  Overview
@@ -27,12 +27,12 @@ It focuses on building a structured web application with frontend and backend co
 
 ---
 
-## 📁 Repository Structure
+##  Repository Structure
 
 MAD1-PROJECT/
 │
-├── backend/     # Backend logic
-├── frontend/    # Frontend UI
+├── backend/     
+├── frontend/   
 └── README.md
 
 ---
